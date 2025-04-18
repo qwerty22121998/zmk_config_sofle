@@ -4,8 +4,8 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: mctechnology17
       url-base: https://github.com/mctechnology17
-    - name: GarrettFaucher
-      url-base: https://github.com/GarrettFaucher
+    - name: englmaxi
+      url-base: https://github.com/englmaxi
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -14,8 +14,8 @@ manifest:
     - name: zmk-nice-oled
       remote: mctechnology17
       revision: main
-    - name: zmk-dongle-display-091-oled
-      remote: GarrettFaucher
+    - name: zmk-dongle-display
+      remote: zmk-dongle-display
       revision: main
   self:
     path: config

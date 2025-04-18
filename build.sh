@@ -5,11 +5,12 @@ cd $HOME/Github/zmk
 source .venv/bin/activate
 cd app
 
-EXTRA_MODULES="$CUR;$HOME/Github/zmk-nice-oled"
+EXTRA_MODULES="$CUR;$HOME/Github/zmk-nice-oled;$HOME/Github/zmk-dongle-display"
+
 
 echo "Building dongle..."
-west build -p -d build/dongle -b nice_nano_v2 -S studio-rpc-usb-uart -- -DSHIELD="sofle_dongle dongle_display_091_oled" \
-    -DZMK_CONFIG=$CUR/config -DCONFIG_ZMK_STUDIO=y -DZMK_EXTRA_MODULES="$EXTRA_MODULES;$HOME/Github/zmk-dongle-display-091-oled"
+west build -p -d build/dongle -b nice_nano_v2 -S studio-rpc-usb-uart -- -DSHIELD="sofle_dongle dongle_display" \
+    -DZMK_CONFIG=$CUR/config -DCONFIG_ZMK_STUDIO=y -DZMK_EXTRA_MODULES=$EXTRA_MODULES
 echo "Building left..."
 west build -p -d build/left -b nice_nano_v2 -- -DSHIELD="sofle_left nice_oled" \
     -DZMK_CONFIG=$CUR/config -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DZMK_EXTRA_MODULES=$EXTRA_MODULES\
