@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Ryan Cross
 # SPDX-License-Identifier: MIT
 
-if SHIELD_SOFLE_DONGLE 
+if SHIELD_SOFLE_DONGLE || SHIELD_SOFLE_LEFT
 
 config ZMK_KEYBOARD_NAME
     default "Sofle"
