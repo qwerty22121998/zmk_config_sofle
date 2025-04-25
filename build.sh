@@ -1,13 +1,20 @@
 #!/bin/zsh
 set -e
 CUR=$(pwd)
-rm -f *.uf2 ||:
+rm -f *.uf2 || :
 cd $HOME/Github/zmk
 source .venv/bin/activate
 cd app
 EXTRA_MODULES="$CUR;$HOME/Github/zmk-nice-oled;$HOME/Github/zmk-dongle-display-091-oled;$HOME/Github/zmk-dongle-display"
 
-function build_central () {
+function build_reset() {
+    echo "Building reset..."
+    west build -p -d build/reset -b nice_nano_v2 -- -DSHIELD="settings_reset"
+
+    cp build/reset/zephyr/zmk.uf2 $CUR/reset.uf2
+}
+
+function build_central() {
     NAME=$1
     BOARD=$2
     SHIELD=$3
@@ -17,15 +24,17 @@ function build_central () {
     cp build/central-$NAME/zephyr/zmk.uf2 $CUR/central-$NAME.uf2
 }
 
-function build_peripheral () {
+function build_peripheral() {
     NAME=$1
     BOARD=$2
     SHIELD=$3
     echo "Building peripheral $NAME..."
     west build -p -d build/peripheral-$NAME -b $BOARD -- -DSHIELD="$SHIELD" \
-        -DZMK_CONFIG=$CUR/config -DZMK_EXTRA_MODULES=$EXTRA_MODULES
+        -DZMK_CONFIG=$CUR/config -DZMK_EXTRA_MODULES=$EXTRA_MODULES -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
     cp build/peripheral-$NAME/zephyr/zmk.uf2 $CUR/peripheral-$NAME.uf2
 }
+# reset
+build_reset
 
 # nice view
 build_central left-nice-view nice_nano_v2 "sofle_left nice_view_adapter_rgb nice_epaper" &
