@@ -1,7 +1,7 @@
 layout: {zmk_keyboard: sofle}
 layers:
   windows: [ESCAPE, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', BACKSPACE, TAB, Q, W, E, R, T, Y, U, I, O, P, \, CLCK, A, S, D, F, G, H, J, K, L, ;, '''', LSHFT,
-    Z, X, C, V, B, MUTE, PRINTSCREEN, N, M, ',', ., /, RSHFT, LCTRL, LEFT WIN, LEFT ALT, raise, SPACE, ENTER, raise, '-', '=', DELETE]
+    Z, X, C, V, B, MUTE, PRINTSCREEN, N, M, ',', ., /, RSHFT, LEFT WIN, LEFT ALT, LCTRL, '&raise_nav_tap', SPACE, ENTER, '&raise_nav_tap', '-', '=', DELETE]
   mac:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -117,7 +117,7 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {type: held}
+  - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -166,10 +166,10 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
+  - RGB EFR
   - RGB BRD
   - RGB BRI
-  - {t: ▽, type: trans}
+  - RGB EFF
   - {t: mac, h: toggle}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -182,9 +182,6 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: fn, h: toggle}
+  - RGB SPD
+  - RGB SPI
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-combos:
-- p: [53, 56]
-  k: {t: fn, h: toggle}
