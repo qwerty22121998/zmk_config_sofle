@@ -8,6 +8,8 @@ manifest:
       url-base: https://github.com/GarrettFaucher
     - name: englmaxi
       url-base: https://github.com/englmaxi
+    - name: qwerty22121998
+      url-base: https://github.com/qwerty22121998
   projects:
     - name: zmk
       remote: zmkfirmware
@@ -21,6 +23,9 @@ manifest:
       revision: main
     - name: zmk-dongle-display
       remote: englmaxi
+      revision: main
+    - name: nice-view-anim
+      remote: qwerty22121998
       revision: main
   self:
     path: config
