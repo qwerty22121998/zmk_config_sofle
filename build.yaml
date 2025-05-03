@@ -37,8 +37,27 @@ include:
     artifact-name: peripheral_left_nice_view
 
   - board: nice_nano_v2
+    shield: sofle_left nice_view_adapter_rgb nice_view_anim
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n 
+    artifact-name: peripheral_left_nice_view_planet
+
+  - board: nice_nano_v2
+    shield: sofle_left nice_view_adapter_rgb nice_view_anim
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DCONFIG_ZMK_NICE_VIEW_ANIM_VARIANT=1
+    artifact-name: peripheral_left_nice_view_astronaut
+
+  - board: nice_nano_v2
     shield: sofle_right nice_view_adapter_rgb nice_epaper
     artifact-name: peripheral_right_nice_view
+
+  - board: nice_nano_v2
+    shield: sofle_right nice_view_adapter_rgb nice_view_anim 
+    artifact-name: peripheral_right_nice_view_planet
+
+  - board: nice_nano_v2
+    shield: sofle_right nice_view_adapter_rgb nice_view_anim
+    cmake-args: -DCONFIG_ZMK_NICE_VIEW_ANIM_VARIANT=1
+    artifact-name: peripheral_right_nice_view_astronaut
 
   # oled
   - board: nice_nano_v2
