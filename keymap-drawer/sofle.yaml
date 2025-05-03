@@ -165,11 +165,11 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
-  - {t: ▽, type: trans}
-  - RGB EFR
-  - RGB BRD
-  - RGB BRI
+  - ''
+  - RGB SPD
+  - RGB TOG
   - RGB EFF
+  - RGB SPI
   - {t: mac, h: toggle}
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
@@ -182,6 +182,6 @@ layers:
   - {t: ▽, type: trans}
   - {t: ▽, type: trans}
   - {t: fn, h: toggle}
-  - RGB SPD
-  - RGB SPI
+  - RGB BRD
+  - RGB BRI
   - {t: ▽, type: trans}
