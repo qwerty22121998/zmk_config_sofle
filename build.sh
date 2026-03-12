@@ -2,10 +2,14 @@
 set -e
 CUR=$(pwd)
 rm -f *.uf2 || :
-cd $HOME/Github/zmk
+cd ../zmk
 source .venv/bin/activate
 cd app
-EXTRA_MODULES="$CUR;$HOME/Github/zmk-nice-oled;$HOME/Github/zmk-dongle-display-091-oled;$HOME/Github/zmk-dongle-display;$HOME/Github/nice-view-anim"
+EXTRA_MODULES="$CUR"
+EXTRA_MODULES="$EXTRA_MODULES;$CUR/dep/zmk-nice-oled"
+EXTRA_MODULES="$EXTRA_MODULES;$CUR/dep/zmk-dongle-display-091-oled"
+EXTRA_MODULES="$EXTRA_MODULES;$CUR/dep/zmk-dongle-display"
+EXTRA_MODULES="$EXTRA_MODULES;$CUR/dep/nice-view-anim"
 
 function build_reset() {
     echo "Building reset..."
@@ -31,7 +35,7 @@ function build_peripheral() {
     ARGS=$4
     echo "Building peripheral $NAME..."
     west build -p -d build/peripheral-$NAME -b $BOARD -- -DSHIELD="$SHIELD" \
-        -DZMK_CONFIG=$CUR/config -DZMK_EXTRA_MODULES=$EXTRA_MODULES -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n 
+        -DZMK_CONFIG=$CUR/config -DZMK_EXTRA_MODULES=$EXTRA_MODULES -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
     cp build/peripheral-$NAME/zephyr/zmk.uf2 $CUR/peripheral-$NAME.uf2
 }
 # reset
