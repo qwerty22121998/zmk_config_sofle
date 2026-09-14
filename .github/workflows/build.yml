@@ -1,5 +1,21 @@
 name: Build ZMK firmware
-on: [push, pull_request, workflow_dispatch]
+on:
+  # Branches build through their PR; push only builds main (avoids a duplicate push + PR run)
+  push:
+    branches: [main]
+    paths-ignore:
+      - "keymap-drawer/**"
+      - "**.md"
+  pull_request:
+    paths-ignore:
+      - "keymap-drawer/**"
+      - "**.md"
+  workflow_dispatch:
+
+# A newer push to the same branch/PR cancels the older build
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
