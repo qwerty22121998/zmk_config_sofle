@@ -2,10 +2,17 @@
 set -e
 CUR=$(pwd)
 rm -f *.uf2 || :
-cd $HOME/Github/zmk
+cd ../zmk
 source .venv/bin/activate
 cd app
-EXTRA_MODULES="$CUR;$HOME/Github/zmk-nice-oled;$HOME/Github/zmk-dongle-display-091-oled;$HOME/Github/zmk-dongle-display;$HOME/Github/nice-view-anim"
+# CMake 4.x breaks Zephyr 3.5's SDK lookup unless these are set explicitly
+export ZEPHYR_TOOLCHAIN_VARIANT=zephyr
+export ZEPHYR_SDK_INSTALL_DIR=${ZEPHYR_SDK_INSTALL_DIR:-$HOME/zephyr-sdk-0.17.0}
+EXTRA_MODULES="$CUR"
+EXTRA_MODULES="$EXTRA_MODULES;$CUR/dep/zmk-nice-oled"
+EXTRA_MODULES="$EXTRA_MODULES;$CUR/dep/zmk-dongle-display-091-oled"
+EXTRA_MODULES="$EXTRA_MODULES;$CUR/dep/zmk-dongle-display"
+EXTRA_MODULES="$EXTRA_MODULES;$CUR/dep/nice-view-anim"
 
 function build_reset() {
     echo "Building reset..."
@@ -31,26 +38,38 @@ function build_peripheral() {
     ARGS=$4
     echo "Building peripheral $NAME..."
     west build -p -d build/peripheral-$NAME -b $BOARD -- -DSHIELD="$SHIELD" \
-        -DZMK_CONFIG=$CUR/config -DZMK_EXTRA_MODULES=$EXTRA_MODULES -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n 
+        -DZMK_CONFIG=$CUR/config -DZMK_EXTRA_MODULES=$EXTRA_MODULES -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n $ARGS
     cp build/peripheral-$NAME/zephyr/zmk.uf2 $CUR/peripheral-$NAME.uf2
 }
+
+# Plain `wait` always returns 0; wait on each pid so a failed build fails the script
+PIDS=()
+function wait_all() {
+    local rc=0 pid
+    for pid in $PIDS; do
+        wait $pid || rc=1
+    done
+    PIDS=()
+    return $rc
+}
+
 # reset
 build_reset
 
 # nice view
-build_central left-nice-view nice_nano_v2 "sofle_left nice_view_adapter_rgb nice_epaper" &
-build_peripheral left-nice-view nice_nano_v2 "sofle_left nice_view_adapter_rgb nice_epaper" &
-build_peripheral left-nice-view-planet nice_nano_v2 "sofle_left nice_view_adapter_rgb nice_view_anim" &
-build_peripheral left-nice-view-astronaut nice_nano_v2 "sofle_left nice_view_adapter_rgb nice_view_anim" "-DCONFIG_ZMK_NICE_VIEW_ANIM_VARIANT=1" &
-build_peripheral right-nice-view nice_nano_v2 "sofle_right nice_view_adapter_rgb nice_epaper" &
-build_peripheral right-nice-view-planet nice_nano_v2 "sofle_right nice_view_adapter_rgb nice_view_anim" &
-build_peripheral right-nice-view-astronaut nice_nano_v2 "sofle_right nice_view_adapter_rgb nice_view_anim" "-DCONFIG_ZMK_NICE_VIEW_ANIM_VARIANT=1" &
-wait
+build_central left-nice-view nice_nano_v2 "sofle_left nice_view_adapter_rgb nice_epaper" & PIDS+=($!)
+build_peripheral left-nice-view nice_nano_v2 "sofle_left nice_view_adapter_rgb nice_epaper" & PIDS+=($!)
+build_peripheral left-nice-view-planet nice_nano_v2 "sofle_left nice_view_adapter_rgb nice_view_anim" & PIDS+=($!)
+build_peripheral left-nice-view-astronaut nice_nano_v2 "sofle_left nice_view_adapter_rgb nice_view_anim" "-DCONFIG_ZMK_NICE_VIEW_ANIM_VARIANT=1" & PIDS+=($!)
+build_peripheral right-nice-view nice_nano_v2 "sofle_right nice_view_adapter_rgb nice_epaper" & PIDS+=($!)
+build_peripheral right-nice-view-planet nice_nano_v2 "sofle_right nice_view_adapter_rgb nice_view_anim" & PIDS+=($!)
+build_peripheral right-nice-view-astronaut nice_nano_v2 "sofle_right nice_view_adapter_rgb nice_view_anim" "-DCONFIG_ZMK_NICE_VIEW_ANIM_VARIANT=1" & PIDS+=($!)
+wait_all
 
 # oled
-build_central dongle-oled-091 nice_nano_v2 "sofle_dongle dongle_display_091_oled" &
-build_central dongle-oled nice_nano_v2 "sofle_dongle dongle_display" &
-build_central left-oled nice_nano_v2 "sofle_left nice_oled" &
-build_peripheral left-oled nice_nano_v2 "sofle_left nice_oled" &
-build_peripheral right-oled nice_nano_v2 "sofle_right nice_oled" &
-wait
+build_central dongle-oled-091 nice_nano_v2 "sofle_dongle_091 dongle_display_091_oled" & PIDS+=($!)
+build_central dongle-oled nice_nano_v2 "sofle_dongle dongle_display" & PIDS+=($!)
+build_central left-oled nice_nano_v2 "sofle_left nice_oled" & PIDS+=($!)
+build_peripheral left-oled nice_nano_v2 "sofle_left nice_oled" & PIDS+=($!)
+build_peripheral right-oled nice_nano_v2 "sofle_right nice_oled" & PIDS+=($!)
+wait_all
