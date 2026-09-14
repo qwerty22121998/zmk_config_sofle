@@ -4,7 +4,6 @@ on:
   push:
     paths:
       - "config/*.keymap"
-      - "config/*.dtsi"
 
 jobs:
   draw:

@@ -11,8 +11,6 @@
 #include <dt-bindings/zmk/rgb.h>
 
 / {
-    conditional_layers { compatible = "zmk,conditional-layers"; };
-
     behaviors {
         rgb_hue: rgb_hue {
             compatible = "zmk,behavior-sensor-rotate";
@@ -37,8 +35,6 @@
             tapping-term-ms = <200>;
         };
     };
-
-    combos { compatible = "zmk,combos"; };
 
     keymap {
         compatible = "zmk,keymap";
