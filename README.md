@@ -33,7 +33,7 @@ Then flash a `peripheral_left_*` file to the left half and a `peripheral_right_*
 ### Screen flavors
 
 - `*_nice_view`: the stock ZMK status screen for the nice!view
-- `*_nice_view_planet` and `*_nice_view_astronaut`: the same nice!view, but with an animation
+- `*_nice_view_planet`, `*_nice_view_astronaut`, `*_nice_view_glitch` and `*_nice_view_lui`: the same nice!view, but with an animation
 - `*_oled`: for regular I2C OLEDs, using the nice-oled widgets
 
 The animated nice!view builds only come as peripherals. If the left half is your central, it uses the stock nice!view screen.
@@ -95,6 +95,12 @@ Then run:
 ```sh
 ./build.py                     # build everything in build.yaml
 ./build.py central_left_oled   # or just the ones you name
+```
+
+To try changes to a display module before pushing them, check it out next to this repo and name it in `LOCAL_MODULES`. The build then uses that folder as it is on disk, uncommitted changes included, instead of the commit pinned in `config/west.yml`:
+
+```sh
+LOCAL_MODULES=nice-view-anim ./build.py peripheral_left_nice_view_lui   # uses ../nice-view-anim
 ```
 
 If you already have ZMK set up at `../zmk` (a west workspace with a `.venv`, like ZMK's local setup guide makes), the script uses it as is. Otherwise the first run creates a venv and downloads ZMK and Zephyr into `.zmk/`, which is about 2 GB. Either way, the display modules get fetched into `.zmk/` at the commits pinned in `config/west.yml`. Later runs reuse all of that and only rebuild what changed.

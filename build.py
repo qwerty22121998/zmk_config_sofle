@@ -12,6 +12,8 @@ config/west.yml. Needs git, cmake, ninja, dtc and Zephyr SDK 0.17.0
 
 Output: <artifact-name>.uf2 in the repo root, logs in .zmk/logs/.
 JOBS sets how many builds run at once (default 4).
+LOCAL_MODULES=nice-view-anim builds that module from ../nice-view-anim as it is on disk,
+uncommitted changes included, instead of the commit pinned in config/west.yml.
 """
 import os
 import shutil
@@ -57,6 +59,12 @@ builds = [b for b in builds if not wanted or b["artifact-name"] in wanted]
 manifest = yaml.safe_load((ROOT / "config/west.yml").read_text())["manifest"]
 url_bases = {r["name"]: r["url-base"] for r in manifest["remotes"]}
 modules = [p for p in manifest["projects"] if p["name"] != "zmk"]
+local = set(filter(None, os.environ.get("LOCAL_MODULES", "").split(",")))
+if unknown := local - {m["name"] for m in modules}:
+    sys.exit(f"unknown module in LOCAL_MODULES: {', '.join(sorted(unknown))}")
+module_dirs = [ROOT.parent / m["name"] if m["name"] in local else CACHE / m["name"] for m in modules]
+if missing := sorted(str(ROOT.parent / name) for name in local if not (ROOT.parent / name).is_dir()):
+    sys.exit(f"LOCAL_MODULES checkout not found: {', '.join(missing)}")
 
 
 def checkout(project):
@@ -74,8 +82,11 @@ def checkout(project):
     run("git", "checkout", "-q", "--detach", "FETCH_HEAD", cwd=path)
 
 
-for m in modules:
-    checkout(m)
+for m, d in zip(modules, module_dirs):
+    if m["name"] in local:
+        print(f"using local {d}", flush=True)
+    else:
+        checkout(m)
 
 if REUSE:
     # ponytail: no version check, ../zmk is trusted to be on the ZMK release config/west.yml pins
@@ -87,7 +98,7 @@ else:
     run("west", "update", "--narrow", "-o=--depth=1")
     run("pip", "install", "-q", "-r", "zephyr/scripts/requirements-base.txt")
 
-extra_modules = ";".join([str(ROOT), *(str(CACHE / m["name"]) for m in modules)])
+extra_modules = ";".join(map(str, [ROOT, *module_dirs]))
 (CACHE / "logs").mkdir(parents=True, exist_ok=True)
 
 
