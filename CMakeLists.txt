@@ -1,0 +1,1 @@
+target_sources_ifdef(CONFIG_ZMK_DISPLAY_KEEP_ON_USB app PRIVATE src/display_keep_on_usb.c)

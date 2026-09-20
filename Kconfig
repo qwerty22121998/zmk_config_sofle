@@ -1,0 +1,6 @@
+config ZMK_DISPLAY_KEEP_ON_USB
+    bool "Keep the display on while idle if USB powered"
+    default y
+    depends on ZMK_DISPLAY_BLANK_ON_IDLE && USB_DEVICE_STACK
+    help
+      Blank on idle only when running on battery. Each half checks its own USB power.
