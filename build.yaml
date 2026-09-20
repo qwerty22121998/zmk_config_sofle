@@ -101,8 +101,48 @@ include:
   - board: nice_nano_v2
     shield: sofle_left nice_oled
     cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
-    artifact-name: peripheral_left_oled 
+    artifact-name: peripheral_left_oled_cat
+
+  - board: nice_nano_v2
+    shield: sofle_left nice_oled
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CAT=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_GEM=y
+    artifact-name: peripheral_left_oled_gem
+
+  - board: nice_nano_v2
+    shield: sofle_left nice_oled
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CAT=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_HEAD=y
+    artifact-name: peripheral_left_oled_head
+
+  - board: nice_nano_v2
+    shield: sofle_left nice_oled
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CAT=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_SPACEMAN=y
+    artifact-name: peripheral_left_oled_spaceman
+
+  - board: nice_nano_v2
+    shield: sofle_left nice_oled
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CAT=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_POKEMON=y
+    artifact-name: peripheral_left_oled_pokemon
 
   - board: nice_nano_v2
     shield: sofle_right nice_oled
-    artifact-name: peripheral_right_oled
+    artifact-name: peripheral_right_oled_cat
+
+  - board: nice_nano_v2
+    shield: sofle_right nice_oled
+    cmake-args: -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CAT=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_GEM=y
+    artifact-name: peripheral_right_oled_gem
+
+  - board: nice_nano_v2
+    shield: sofle_right nice_oled
+    cmake-args: -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CAT=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_HEAD=y
+    artifact-name: peripheral_right_oled_head
+
+  - board: nice_nano_v2
+    shield: sofle_right nice_oled
+    cmake-args: -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CAT=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_SPACEMAN=y
+    artifact-name: peripheral_right_oled_spaceman
+
+  - board: nice_nano_v2
+    shield: sofle_right nice_oled
+    cmake-args: -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_CAT=n -DCONFIG_NICE_OLED_WIDGET_ANIMATION_PERIPHERAL_POKEMON=y
+    artifact-name: peripheral_right_oled_pokemon

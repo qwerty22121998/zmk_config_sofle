@@ -89,7 +89,7 @@ for m, d in zip(modules, module_dirs):
         checkout(m)
 
 if REUSE:
-    # ponytail: no version check, ../zmk is trusted to be on the ZMK release config/west.yml pins
+    # no version check, ../zmk is trusted to be on the ZMK release config/west.yml pins
     print(f"using ZMK in {ZMK} ({run('git', 'describe', '--tags', capture=True).strip()})", flush=True)
 else:
     checkout(next(p for p in manifest["projects"] if p["name"] == "zmk"))
